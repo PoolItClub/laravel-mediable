@@ -33,6 +33,7 @@ class ImageManipulation
 
     public const ON_DUPLICATE_INCREMENT = 'increment';
     public const ON_DUPLICATE_ERROR = 'error';
+    public const ON_DUPLICATE_UPDATE='update';
 
     /** @var callable */
     private $callback;
@@ -314,6 +315,15 @@ class ImageManipulation
     public function onDuplicateError(): self
     {
         $this->onDuplicateBehaviour = self::ON_DUPLICATE_ERROR;
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function onDuplicateUpdate(): self
+    {
+        $this->onDuplicateBehaviour = self::ON_DUPLICATE_UPDATE;
         return $this;
     }
 
