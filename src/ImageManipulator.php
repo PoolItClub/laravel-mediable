@@ -161,6 +161,11 @@ class ImageManipulator
             $this->filesystem->disk($originalVariant->disk)
                 ->delete($originalVariant->getDiskPath());
         }
+        elseif ($variant->exists){
+            $variant->exists=false;
+            $variant->save();
+            return $variant;
+        }
 
         $visibility = $manipulation->getVisibility();
         if ($visibility == 'match') {
@@ -281,7 +286,9 @@ class ImageManipulator
         switch ($manipulation->getOnDuplicateBehaviour()) {
             case ImageManipulation::ON_DUPLICATE_ERROR:
                 throw ImageManipulationException::fileExists($variant->getDiskPath());
-
+            case ImageManipulation::ON_DUPLICATE_UPDATE:
+                    $variant->exists = true;
+                break;
             case ImageManipulation::ON_DUPLICATE_INCREMENT:
             default:
                 $variant->filename = $this->generateUniqueFilename($variant);
